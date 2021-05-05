@@ -1,9 +1,11 @@
 extends Particles2D
 class_name Particles2D_Plus, "res://Particles2D+/GPUParticles2D_Icon.svg"
 
-var timer: Timer
 
-onready var emitting_internal: bool = one_shot
+export var one_shot_start: bool = false
+
+var emitting_internal: bool
+var timer: Timer
 
 signal particles_cycle_finished
 
@@ -14,7 +16,12 @@ func _ready():
 	timer.connect("timeout", self, "_on_timer_timeout")
 	add_child(timer)
 	configure_timer()
-
+	
+	if one_shot_start:
+		one_shot = true
+		emitting = true
+	
+	emitting_internal = one_shot
 
 func configure_timer():
 	timer.autostart = emitting
